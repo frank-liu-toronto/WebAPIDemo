@@ -3,9 +3,9 @@ using WebAPIDemo.Models.Repositories;
 using WebAPIDemo.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPIDemo.Filters
+namespace WebAPIDemo.Filters.ActionFilters
 {
-    public class Shirt_ValidateCreateShirtFilterAttribute: ActionFilterAttribute
+    public class Shirt_ValidateCreateShirtFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {

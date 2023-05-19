@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using WebAPIDemo.Models;
 
-namespace WebAPIDemo.Filters
+namespace WebAPIDemo.Filters.ActionFilters
 {
-    public class Shirt_ValidateUpdateShirtFilterAttribute: ActionFilterAttribute
+    public class Shirt_ValidateUpdateShirtFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
