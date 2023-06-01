@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebAPIDemo.Data;
 using WebAPIDemo.Filters;
 using WebAPIDemo.Filters.ActionFilters;
 using WebAPIDemo.Filters.ExceptionFilters;
@@ -7,15 +8,21 @@ using WebAPIDemo.Models.Repositories;
 
 namespace WebAPIDemo.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class ShirtsController: ControllerBase
     {
+        private readonly ApplicationDbContext db;
+
+        public ShirtsController(ApplicationDbContext db)
+        {
+            this.db = db;
+        }
+
         [HttpGet]        
         public IActionResult GetShirts()
         {
-            return Ok(ShirtRepository.GetShirts());
+            return Ok(db.Shirts.ToList());
         }
 
         [HttpGet("{id}")]
