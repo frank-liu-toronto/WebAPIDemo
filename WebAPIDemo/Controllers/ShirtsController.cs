@@ -33,10 +33,11 @@ namespace WebAPIDemo.Controllers
         }
 
         [HttpPost]
-        [Shirt_ValidateCreateShirtFilter]
+        [TypeFilter(typeof(Shirt_ValidateCreateShirtFilterAttribute))]
         public IActionResult CreateShirt([FromBody]Shirt shirt)
         {
-            ShirtRepository.AddShirt(shirt);
+            this.db.Shirts.Add(shirt);
+            this.db.SaveChanges();
 
             return CreatedAtAction(nameof(GetShirtById),
                 new { id = shirt.ShirtId },
@@ -46,10 +47,17 @@ namespace WebAPIDemo.Controllers
         [HttpPut("{id}")]
         [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
         [Shirt_ValidateUpdateShirtFilter]
-        [Shirt_HandleUpdateExceptionsFilter]
+        [TypeFilter(typeof(Shirt_HandleUpdateExceptionsFilterAttribute))]
         public IActionResult UpdateShirt(int id, Shirt shirt)
-        {            
-            ShirtRepository.UpdateShirt(shirt);            
+        {
+            var shirtToUpdate = HttpContext.Items["shirt"] as Shirt;
+            shirtToUpdate.Brand = shirt.Brand;
+            shirtToUpdate.Price = shirt.Price;
+            shirtToUpdate.Size = shirt.Size;
+            shirtToUpdate.Color = shirt.Color;
+            shirtToUpdate.Gender = shirt.Gender;
+
+            db.SaveChanges();
 
             return NoContent();
         }
