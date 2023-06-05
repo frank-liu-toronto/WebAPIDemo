@@ -1,13 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApp.Data;
+using WebApp.Models;
 using WebApp.Models.Repositories;
 
 namespace WebApp.Controllers
 {
     public class ShirtsController : Controller
     {
-        public IActionResult Index()
+        private readonly IWebApiExecuter webApiExecuter;
+
+        public ShirtsController(IWebApiExecuter webApiExecuter)
         {
-            return View(ShirtRepository.GetShirts());
+            this.webApiExecuter = webApiExecuter;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            return View(await webApiExecuter.InvokeGet<List<Shirt>>("shirts"));
         }
     }
 }
