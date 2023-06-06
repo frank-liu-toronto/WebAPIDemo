@@ -27,6 +27,15 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateShirt(Shirt shirt)
         {
+            if (ModelState.IsValid)
+            {
+                var response = await webApiExecuter.InvokePost("shirts", shirt);
+                if (response != null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
             return View(shirt);
         }
     }
