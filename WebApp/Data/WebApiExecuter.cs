@@ -24,5 +24,12 @@
 
             return await response.Content.ReadFromJsonAsync<T>();
         }
+
+        public async Task InvokePut<T>(string relativeUrl, T obj)
+        {
+            var httpClient = httpClientFactory.CreateClient(apiName);
+            var response = await httpClient.PutAsJsonAsync(relativeUrl, obj);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }
