@@ -1,0 +1,70 @@
+﻿@model Shirt
+
+<h3>Shirt</h3>
+<br/>
+<form method="post" asp-action="UpdateShirt">
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+    <div class="mb-3 row">
+        <div class="col-2">
+            <label asp-for="Brand" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="text" asp-for="Brand" class="form-control" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="Brand"></span>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-2">
+            <label asp-for="Gender" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="text" asp-for="Gender" class="form-control" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="Gender"></span>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-2">
+            <label asp-for="Color" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="text" asp-for="Color" class="form-control" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="Color"></span>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-2">
+            <label asp-for="Size" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="number" asp-for="Size" class="form-control" min="1" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="Size"></span>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-2">
+            <label asp-for="Price" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="number" asp-for="Price" class="form-control" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="Price"></span>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-2">
+            <input type="submit" class="btn btn-primary" value="Save" />
+        </div>
+        <div class="col-6">
+            
+        </div>
+    </div>
+</form>
