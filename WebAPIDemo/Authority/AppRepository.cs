@@ -12,12 +12,7 @@
                 Secret = "0673FC70-0514-4011-B4A3-DF9BC03201BC",
                 Scopes = "read,write"
             }
-        };
-
-        public static bool Authenticate(string clientId, string secret)
-        {
-            return _applications.Any(x => x.ClientId == clientId && x.Secret == secret);
-        }
+        };        
 
         public static Application? GetApplicationByClientId(string clientId)
         {
