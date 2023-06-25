@@ -28,7 +28,7 @@ namespace WebAPIDemo.Controllers
                 {
                     access_toke = CreateToken(credential.ClientId, expiresAt),
                     expires_at = expiresAt
-                }); 
+                }); ; 
             }
             else
             {
@@ -52,7 +52,8 @@ namespace WebAPIDemo.Controllers
             var claims = new List<Claim>
             {
                 new Claim("AppName", app?.ApplicationName??string.Empty),
-                new Claim("Scopes", app?.Scopes??string.Empty)
+                new Claim("Read", (app?.Scopes??string.Empty).Contains("read")?"true":"false"),
+                new Claim("Write", (app?.Scopes??string.Empty).Contains("write")?"true":"false"),
             };
 
             var secretKey = Encoding.ASCII.GetBytes(configuration.GetValue<string>("SecretKey"));
@@ -62,8 +63,8 @@ namespace WebAPIDemo.Controllers
                     new SymmetricSecurityKey(secretKey),
                     SecurityAlgorithms.HmacSha256Signature),
                 claims: claims,
-                notBefore: DateTime.UtcNow,
-                expires: expiresAt
+                expires: expiresAt,
+                notBefore: DateTime.UtcNow
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);
