@@ -26,7 +26,7 @@ namespace WebAPIDemo.Controllers
 
                 return Ok(new
                 {
-                    access_toke = Authenticator.CreateToken(credential.ClientId, expiresAt, configuration.GetValue<string>("SecretKey")),
+                    access_token = Authenticator.CreateToken(credential.ClientId, expiresAt, configuration.GetValue<string>("SecretKey")),
                     expires_at = expiresAt
                 }); ; 
             }
