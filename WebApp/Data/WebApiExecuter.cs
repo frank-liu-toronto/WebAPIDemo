@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -10,13 +11,16 @@ namespace WebApp.Data
         private const string authApiName = "AuthorityApi";
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IConfiguration configuration;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public WebApiExecuter(
             IHttpClientFactory httpClientFactory,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IHttpContextAccessor httpContextAccessor)
         {
             this.httpClientFactory = httpClientFactory;
             this.configuration = configuration;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<T?> InvokeGet<T>(string relativeUrl)
@@ -68,21 +72,33 @@ namespace WebApp.Data
 
         private async Task AddJwtToHeader(HttpClient httpClient)
         {
-            var clientId = configuration.GetValue<string>("ClientId");
-            var secret = configuration.GetValue<string>("Secret");
-
-            // Authenticate 
-            var authoClient = httpClientFactory.CreateClient(authApiName);
-            var response = await authoClient.PostAsJsonAsync("auth", new AppCredential
+            JwtToken? token = null;
+            string? strToken = httpContextAccessor.HttpContext?.Session.GetString("access_token");
+            if (!string.IsNullOrWhiteSpace(strToken))
             {
-                 ClientId = clientId,
-                 Secret = secret
-            });
-            response.EnsureSuccessStatusCode();
+                token = JsonConvert.DeserializeObject<JwtToken>(strToken);
+            }
 
-            // Get the JWT 
-            string strToken = await response.Content.ReadAsStringAsync();
-            var token = JsonConvert.DeserializeObject<JwtToken>(strToken);
+            if (token == null)
+            {
+                var clientId = configuration.GetValue<string>("ClientId");
+                var secret = configuration.GetValue<string>("Secret");
+
+                // Authenticate 
+                var authoClient = httpClientFactory.CreateClient(authApiName);
+                var response = await authoClient.PostAsJsonAsync("auth", new AppCredential
+                {
+                    ClientId = clientId,
+                    Secret = secret
+                });
+                response.EnsureSuccessStatusCode();
+
+                // Get the JWT 
+                strToken = await response.Content.ReadAsStringAsync();
+                token = JsonConvert.DeserializeObject<JwtToken>(strToken);
+
+                httpContextAccessor.HttpContext?.Session.SetString("access_token", strToken);
+            }            
 
             // Pass the JWT to endpoints through the http headers
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token?.AccessToken);
