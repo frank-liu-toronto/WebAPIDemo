@@ -79,7 +79,8 @@ namespace WebApp.Data
                 token = JsonConvert.DeserializeObject<JwtToken>(strToken);
             }
 
-            if (token == null)
+            if (token == null ||
+                token.ExpiresAt <= DateTime.UtcNow)
             {
                 var clientId = configuration.GetValue<string>("ClientId");
                 var secret = configuration.GetValue<string>("Secret");
