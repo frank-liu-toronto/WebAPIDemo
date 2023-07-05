@@ -10,6 +10,7 @@ using WebAPIDemo.Models.Repositories;
 
 namespace WebAPIDemo.Controllers
 {
+    [ApiVersion("1.0")]
     [ApiController]
     [Route("api/[controller]")]
     [JwtTokenAuthFilter]

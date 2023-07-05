@@ -7,6 +7,7 @@ using System.Security.Claims;
 
 namespace WebAPIDemo.Controllers
 {
+    [ApiVersion("1.0")]
     [ApiController]
     public class AuthorityController: ControllerBase
     {
