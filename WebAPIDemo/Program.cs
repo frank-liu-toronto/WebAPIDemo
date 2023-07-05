@@ -23,7 +23,7 @@ builder.Services.AddApiVersioning(options =>
     //options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
 });
 
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
 builder.Services.AddSwaggerGen(c =>
 {
 
@@ -45,7 +45,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(
+        options =>
+        {
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1");
+        });
 }
 
 app.UseHttpsRedirection();
